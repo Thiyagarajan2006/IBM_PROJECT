@@ -1,0 +1,122 @@
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.chart.*;
+import javafx.scene.control.Label;
+import javafx.scene.control.Button;
+import javafx.scene.layout.*;
+import javafx.stage.Stage;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+
+public class AdminDashboard extends Application {
+
+    @Override
+    public void start(Stage stage) {
+        stage.setTitle("Admin Dashboard");
+
+        // ===== Header =====
+        Label header = new Label("Admin Dashboard Overview");
+        header.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
+
+        Button addReport = new Button("Add Report");
+        addReport.setStyle("-fx-background-color: #0ea5e9; -fx-text-fill: white; -fx-font-size: 14px;");
+
+        HBox headerBox = new HBox(header, addReport);
+        headerBox.setSpacing(20);
+        headerBox.setAlignment(Pos.CENTER_LEFT);
+        headerBox.setPadding(new Insets(20, 20, 20, 20));
+        HBox.setHgrow(addReport, Priority.ALWAYS);
+        headerBox.setStyle("-fx-background-color: #e2e8f0;");
+
+        // ===== Cards =====
+        VBox card1 = createCard("Total Users", "1,245");
+        VBox card2 = createCard("Sales", "$12,340");
+        VBox card3 = createCard("Active Projects", "36");
+        VBox card4 = createCard("Support Tickets", "7");
+
+        GridPane cardsGrid = new GridPane();
+        cardsGrid.setPadding(new Insets(20));
+        cardsGrid.setHgap(20);
+        cardsGrid.setVgap(20);
+        cardsGrid.addRow(0, card1, card2);
+        cardsGrid.addRow(1, card3, card4);
+
+        // ===== Bar Chart =====
+        CategoryAxis xAxis = new CategoryAxis();
+        xAxis.setLabel("Months");
+        NumberAxis yAxis = new NumberAxis();
+        yAxis.setLabel("Sales ($)");
+
+        BarChart<String, Number> barChart = new BarChart<>(xAxis, yAxis);
+        barChart.setTitle("Monthly Sales Report");
+
+        XYChart.Series<String, Number> dataSeries1 = new XYChart.Series<>();
+        dataSeries1.setName("2025");
+        dataSeries1.getData().add(new XYChart.Data<>("Jan", 1200));
+        dataSeries1.getData().add(new XYChart.Data<>("Feb", 1900));
+        dataSeries1.getData().add(new XYChart.Data<>("Mar", 3000));
+        dataSeries1.getData().add(new XYChart.Data<>("Apr", 2500));
+        dataSeries1.getData().add(new XYChart.Data<>("May", 2700));
+        dataSeries1.getData().add(new XYChart.Data<>("Jun", 3200));
+
+        barChart.getData().add(dataSeries1);
+        barChart.setPrefHeight(300);
+
+        // ===== Line Chart =====
+        CategoryAxis xAxis2 = new CategoryAxis();
+        xAxis2.setLabel("Days");
+        NumberAxis yAxis2 = new NumberAxis();
+        yAxis2.setLabel("Users");
+
+        LineChart<String, Number> lineChart = new LineChart<>(xAxis2, yAxis2);
+        lineChart.setTitle("Weekly User Activity");
+
+        XYChart.Series<String, Number> series2 = new XYChart.Series<>();
+        series2.setName("Active Users");
+        series2.getData().add(new XYChart.Data<>("Mon", 200));
+        series2.getData().add(new XYChart.Data<>("Tue", 400));
+        series2.getData().add(new XYChart.Data<>("Wed", 300));
+        series2.getData().add(new XYChart.Data<>("Thu", 500));
+        series2.getData().add(new XYChart.Data<>("Fri", 700));
+        series2.getData().add(new XYChart.Data<>("Sat", 600));
+        series2.getData().add(new XYChart.Data<>("Sun", 800));
+
+        lineChart.getData().add(series2);
+        lineChart.setPrefHeight(300);
+
+        // ===== Charts Layout =====
+        HBox chartsBox = new HBox(20, barChart, lineChart);
+        chartsBox.setPadding(new Insets(20));
+        chartsBox.setAlignment(Pos.CENTER);
+
+        // ===== Main Layout =====
+        VBox root = new VBox(10, headerBox, cardsGrid, chartsBox);
+        root.setPadding(new Insets(10));
+        Scene scene = new Scene(root, 1000, 700);
+
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    // Helper method to create dashboard cards
+    private VBox createCard(String title, String value) {
+        Label titleLabel = new Label(title);
+        titleLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: #475569;");
+        Label valueLabel = new Label(value);
+        valueLabel.setStyle("-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #0ea5e9;");
+
+        VBox card = new VBox(5, titleLabel, valueLabel);
+        card.setAlignment(Pos.CENTER);
+        card.setPadding(new Insets(20));
+        card.setStyle("-fx-background-color: white; -fx-border-radius: 10; -fx-background-radius: 10; "
+                + "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2);");
+        card.setPrefWidth(200);
+        card.setPrefHeight(100);
+
+        return card;
+    }
+
+    public static void main(String[] args) {
+        launch();
+    }
+}
